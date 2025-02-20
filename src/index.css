@@ -1,5 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
 
 
 *{
@@ -18,11 +24,26 @@ body{
   background-color: #040404;
 }
 .blob{
-  height: 300px;
-  width: 300px;
+
   background-color: #27E900;
-  opacity: 0.45;
+  opacity: 0.65;
   filter: blur(125px);
   position: absolute;
+  animation: blobAnimation 5s infinite ease-in-out;
 
+}
+
+@keyframes blobAnimation {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(50px, -50px) scale(1.1);
+  }
+  50% {
+    transform: translate(100px, -100px) scale(0.9);
+  }
+  75% {
+    transform: translate(50px, -50px) scale(1.1);
+  }
 }

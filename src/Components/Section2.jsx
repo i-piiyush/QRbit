@@ -38,13 +38,13 @@ const Section2 = () => {
       loop={true}
     >
        <SwiperSlide>
-        <div className=" "> <Card1 /> </div>
+        <div> <Card1 /> </div>
       </SwiperSlide>
       <SwiperSlide>
-        <div className=" "> <Card2 /> </div>
+        <div> <Card2 /> </div>
       </SwiperSlide>
       <SwiperSlide>
-        <div className=""> <Card3 /> </div>
+        <div> <Card3 /> </div>
       </SwiperSlide>
     </Swiper>
       </div>

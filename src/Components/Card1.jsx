@@ -7,11 +7,15 @@ const Card1 = () => {
 
   return (
     <div className="bg-gray-300  text-black h-[40rem] w-full relative overflow-hidden">
-      <div className="bg-blue-200 w-full h-full overflow-hidden">
-        <img src="https://i.pinimg.com/736x/a0/c0/fa/a0c0fa82075c37c1771a7f86394143df.jpg" alt="demo" className=" w-[10%]"/>
-      </div>
+      <div className="bg-blue-200 w-full h-full overflow-hidden flex justify-center ">
+  <img 
+    src="https://i.pinimg.com/736x/31/78/15/317815f0bef8e2e1e2e85471263b2531.jpg" 
+    alt="demo" 
+    className="w-full h-[50%] object-cover"
+  />
+</div>
       <div
-         className="bg-gradient-to-t from-black via-green-600 via-75% to-green-600 w-full h-[60%] absolute bottom-0 flex flex-col items-start px-5 gap-7"
+         className="bg-gradient-to-t from-black via-green-600 via-75% to-green-600 w-full h-[60%] absolute bottom-0 flex flex-col items-start px-5 gap-7 bigshadow "
         id="cardSec"
        
       >
@@ -22,7 +26,7 @@ const Card1 = () => {
         
         <h1 className="text-white font-semibold text-3xl ">Arjun Mehta</h1>
         <div className="w-full  text-white flex justify-between items-center text-xl ">
-          <h1 className="text-left leading-tight">Freelance web <br /> developer</h1>
+          <h1 className="text-left leading-tight ">Freelance web <br className="hidden lg:block"/> developer</h1>
           <div className=" flex items-center gap-2">
           <FaLocationDot />
           <h1>Banglore, India</h1>

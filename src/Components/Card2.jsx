@@ -4,7 +4,7 @@ import Btn from "./Btn";
 
 const Card2 = () => {
   return(
-    <div className="bg-gray-900 text-white h-[40rem] w-full relative overflow-hidden flex flex-col items-center   rounded-lg shadow-lg">
+    <div className="bg-black text-white h-[40rem] w-full relative overflow-hidden flex flex-col items-center   rounded-lg shadow-lg">
     {/* Profile Image */}
     <div className="w-[100px] h-[100px] rounded-full overflow-hidden border-4 mt-7 border-gray-700">
       <img

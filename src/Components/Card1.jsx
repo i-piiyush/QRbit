@@ -6,8 +6,8 @@ const Card1 = () => {
 
 
   return (
-    <div className="bg-gray-300  text-black h-[40rem] w-full relative overflow-hidden">
-      <div className="bg-blue-200 w-full h-full overflow-hidden flex justify-center ">
+    <div className="  text-black h-[40rem] w-full relative overflow-hidden rounded-lg">
+      <div className=" w-full h-full overflow-hidden flex justify-center ">
   <img 
     src="https://i.pinimg.com/736x/31/78/15/317815f0bef8e2e1e2e85471263b2531.jpg" 
     alt="demo" 

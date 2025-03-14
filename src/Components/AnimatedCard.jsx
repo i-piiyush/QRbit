@@ -13,16 +13,17 @@ const AnimatedCard = () => {
   return (
 
     <>
-    <div className="relative">
+    <div className="relative ">
 
     <AnimatedGlassmorphism />
     
     <div
-        className="w-[20rem] h-[11rem] rounded-lg relative z-40 flex bg-black overflow-hidden shadow-2xl xl:w-[25rem] xl:h-[13rem] 2xl:w-[28rem] 2xl:h-[14rem] "
+        className="w-[20rem] h-[11rem] rounded-lg relative z-40 flex bg-black overflow-hidden shadow-2xl xl:w-[25rem] xl:h-[13rem] 2xl:w-[28rem] 2xl:h-[14rem] animatedCard"
         style={{
             transform: "rotate3d(140, 72, -134, 46deg)",
           perspective: "1000px", // Adds depth perception
           filter: "drop-shadow(20px 20px 100px rgba(0,128, 0, 0.7))", // Custom drop shadow
+          
         }}
       >
         

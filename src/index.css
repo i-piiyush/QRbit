@@ -63,3 +63,8 @@ body{
   
   backdrop-filter: blur(20px);
 }
+@media (max-width: 425px) {
+  .animatedCard{
+    display: none;
+  }
+}

@@ -19,7 +19,7 @@ const Footer = () => {
             dragConstraints={{ left: 0, right: 150 }}
             onDragEnd={handleSwipe}
             animate={{ x: 0 }}
-            className="cursor-pointer bg-white text-black rounded-full px-4 py-2"
+            className="cursor-pointer bg-white text-black rounded-full h-12 w-12 flex justify-center items-center"
           >
             ➜
           </motion.span>

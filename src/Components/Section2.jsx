@@ -7,7 +7,7 @@ const Section2 = () => {
 
 
   return (
-    <div className="text-white w-full h-[140vh]  relative">
+    <div className="text-white w-full min-h-[140vh]  relative flex flex-col justify-evenly gap-10 ">
       <div className="blob top-[30rem] h-[200px] w-[200px] xl:h[500px] xl:w-[500px]  right-[50%] "></div>
       <div className="w-full h-[40%]  flex flex-col md:flex-row md:justify-between md:text-left justify-center items-center text-center px-[3%] gap-5">
         <h1 className="text-4xl md:text-4xl 2xl:text-5xl  font-bold md:w-[50%]">

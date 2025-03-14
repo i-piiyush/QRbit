@@ -12,12 +12,14 @@
   box-sizing: border-box;
 font-family: 'inter';
 
+
 }
 
 :root {
   overflow-x: hidden;
   width: 100%;
   min-height: 100vh;
+  scroll-behavior: smooth;
 
 }
 body{

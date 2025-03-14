@@ -1,10 +1,12 @@
 import React from "react";
 import Blob from "./Blob";
 import { MdOutlineArrowOutward } from "react-icons/md";
+import Navbar from "./Navbar";
 
 const Section1 = () => {
   return (
-    <div className="w-full h-[70vh] px-5 py-10   relative">
+    <div className="w-full h-[70vh] px-5 py-10   relative" id="home">
+      <Navbar />
        <div className="blob -top-[10rem]  h-[500px] w-[500px] -left-[10rem] "></div> 
 
      

@@ -4,7 +4,7 @@ import AnimatedCard from "./AnimatedCard";
 
 const Section2 = () => {
   return (
-    <div className=" text-white w-full relative h-[100vh] flex flex-col md:flex-row items-center justify-center gap-5 px-5 2xl:px-10 ">
+    <div className=" text-white w-full relative h-[100vh] flex flex-col md:flex-row items-center justify-center gap-5 px-5 2xl:px-10 " id="features">
       <div className="blob top-[30rem] h-[200px] w-[200px] xl:h[500px] xl:w-[500px]  right-[50%] 2xl:right-0  "></div>
       <div className=" w-full h-[40%] md:w-[60%] md:h-full flex flex-col gap-5 items-center md:items-start justify-center ">
         <div className="flex gap-3 w-full justify-center items-center md:justify-start  ">

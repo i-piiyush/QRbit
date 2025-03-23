@@ -1,29 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Blob from "./Blob";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import Navbar from "./Navbar";
 import { useState } from "react";
 import SignUp from "./SignUp";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Section1 = () => {
-  
-  const [showSignUp, setShowSignUp] = useState(false);
 
-  const handleSignUpClick = () => {
-    setShowSignUp(true);
-  };
-
- 
   return (
-    <div className="w-full h-[70vh] px-5 py-10   relative" id="home">
-      <Navbar onSignUpClick={handleSignUpClick} />
+    <div className="w-full h-[70vh] px-5 py-10 relative" id="home">
+      <Navbar />
+      
+    
+      
 
-      {showSignUp && <SignUp />}
+      <div className="blob -top-[10rem] h-[500px] w-[500px] -left-[10rem]"></div>
 
-     
-      <div className="blob -top-[10rem]  h-[500px] w-[500px] -left-[10rem] "></div>
-
-      <div className="text-white w-full h-full  flex justify-center md:items-start md:text-left items-center flex-col gap-3 md:gap-5 2xl:gap-10">
+      <div className="text-white w-full h-full flex justify-center md:items-start md:text-left items-center flex-col gap-3 md:gap-5 2xl:gap-10">
         <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl xl:text-7xl md:text-left md:w-[70%] xl:w-[90%] leading-none text-center z-10">
           QRbit is a <br className="md:hidden" />
           purpose-built <br className="md:hidden xl:block" /> tool for
@@ -34,7 +28,7 @@ const Section1 = () => {
           Meet the modern way to share your professional details. Generate sleek
           digital cards with QR codes and link.
         </p>
-        <button className="bg-[#ffffff21] rounded-full px-5 py-3 flex gap-3 justify-center items-center  text-sm backdrop-blur-xl 2xl:text-base 2xl:py-5 2xl:px-7 ">
+        <button className="bg-[#ffffff21] rounded-full px-5 py-3 flex gap-3 justify-center items-center text-sm backdrop-blur-xl 2xl:text-base 2xl:py-5 2xl:px-7 ">
           Create your card
           <MdOutlineArrowOutward />
         </button>

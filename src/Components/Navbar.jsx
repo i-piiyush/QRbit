@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
+import { AppContext } from "../context/AppProvider";
 
-const Navbar = ({ onSignUpClick }) => { // Accept the function as a prop
+const Navbar = () => { 
+  const { handleSignUp} = useContext(AppContext)
   const [isVisible, setIsVisible] = useState(false);
   let scrollTimeout;
 
@@ -41,9 +43,10 @@ const Navbar = ({ onSignUpClick }) => { // Accept the function as a prop
         {/* Sign-up Button */}
         <div
           className="bg-green-400 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer"
-           // Call the function when clicked
+          onClick={() => handleSignUp()}
+          
         >
-          <a href="#" onClick={onSignUpClick}>Sign-up</a>
+          <a>Sign-up</a>
         </div>
       </nav>
     </motion.div>

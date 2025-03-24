@@ -8,14 +8,15 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 // Your Firebase config
 const firebaseConfig = {
-    apiKey: "AIzaSyArd29SUNXA4SXZn_nlC5Qwl2aOZZY4mCQ",
-    authDomain: "qrbit-22e2c.firebaseapp.com",
-    projectId: "qrbit-22e2c",
-    storageBucket: "qrbit-22e2c.firebasestorage.app",
-    messagingSenderId: "950931839233",
-    appId: "1:950931839233:web:051b90bb3f2a2fd3546300",
-    measurementId: "G-7511MHX20J"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

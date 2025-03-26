@@ -2,11 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import { auth, signInWithEmailAndPassword } from "../firebaseConfig";
 import toast, { Toaster } from "react-hot-toast";
 import { AppContext } from "../context/AppProvider";
+import Loader from "./Loader";
 
 const Login = () => {
   const { handleSignUp, setIsLoggedIn } = useContext(AppContext);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading,setLoading] = useState(false)
 
   useEffect(() => {
     if (error) toast.error(error);
@@ -20,11 +22,13 @@ const Login = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     
     try {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      toast.success("Login Successful!");
+      setIsLoggedIn(false);
     } catch {
+      setLoading(false);
       setError("Invalid email or password");
     }
   };
@@ -57,8 +61,8 @@ const Login = () => {
             className="border border-gray-300 p-2 rounded-lg w-full font-light tracking-tight"
             required
           />
-          <button type="submit" className="bg-green-500 text-white p-2 rounded-lg w-full hover:bg-green-600 font-light tracking-tight">
-            Login
+          <button type="submit" className="bg-green-500 flex justify-center items-center text-white p-2 rounded-lg w-full hover:bg-green-600 font-light tracking-tight">
+            {loading?<Loader /> : 'Login'}
           </button>
         </form>
         

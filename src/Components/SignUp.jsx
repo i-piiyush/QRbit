@@ -8,7 +8,7 @@ import {
 import { setDoc, doc } from "firebase/firestore";
 import { AppContext } from "../context/AppProvider";
 import toast, { Toaster } from "react-hot-toast";
-import { Loader } from 'rsuite';
+import Loader from "./Loader"
 
 const SignUp = () => {
   // State for form data
@@ -74,7 +74,7 @@ const SignUp = () => {
           <input type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleChange} className="border border-gray-300 p-2 rounded-lg w-full font-light tracking-tight" required />
           <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} className="border border-gray-300 p-2 rounded-lg w-full font-light tracking-tight" required />
           <input type="password" name="password" placeholder="Password (min 6 characters)" value={formData.password} onChange={handleChange} className="border border-gray-300 p-2 rounded-lg w-full font-light tracking-tight" required />
-          <button type="submit" className="bg-green-500 text-white p-2 rounded-lg w-full hover:bg-green-600 font-light tracking-tight flex justify-center items-center">
+          <button type="submit" className="bg-green-500 h-10 text-white p-2 rounded-lg w-full hover:bg-green-600 font-light tracking-tight flex justify-center items-center">
             {loading ? <Loader />: "Sign Up"}
           </button>
         </form>

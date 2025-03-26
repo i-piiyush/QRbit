@@ -7,16 +7,16 @@ const AppProvider = ({ children }) => {
   const [isSignedUp, setIsSignedUp] = useState(false); // Track signup state
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
 
-  const handleLogin = (navigate) => {
+  const handleLogin = () => {
     setIsLoggedIn(true);
     setIsSignedUp(false); // Auto-disable signup when logged in
-    navigate("/"); // Redirect after login
+    
   };
 
-  const handleSignUp = (navigate) => {
+  const handleSignUp = () => {
     setIsSignedUp(true);
     setIsLoggedIn(false); // Auto-disable login when signing up
-    navigate("/signup"); // Redirect after signup
+     
   };
 
   return (

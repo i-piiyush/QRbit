@@ -46,7 +46,7 @@ const Navbar = () => {
           onClick={() => handleSignUp()}
           
         >
-          <a>Sign-up</a>
+          <a >Sign-up</a>
         </div>
       </nav>
     </motion.div>

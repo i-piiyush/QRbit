@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import { AppContext } from "../context/AppProvider";
 
-const Navbar = () => { 
-  const { handleSignUp} = useContext(AppContext)
+const Navbar = () => {
+  const { user, handleLogout, setAuthModal } = useContext(AppContext);
   const [isVisible, setIsVisible] = useState(false);
   let scrollTimeout;
 
@@ -40,14 +40,26 @@ const Navbar = () => {
         <div className="border border-green-400/15 hover:border-green-400 transition-all duration-300 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer">
           <a href="#features">Features</a>
         </div>
-        {/* Sign-up Button */}
-        <div
-          className="bg-green-400 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer"
-          onClick={() => handleSignUp()}
-          
-        >
-          <a >Sign-up</a>
-        </div>
+
+        {/* Conditional Rendering for Sign-up / Logout */}
+        {user ? (
+          <div
+            className="bg-red-500 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer"
+            onClick={handleLogout}
+          >
+            Logout
+          </div>
+        ) : (
+          <div
+            className="bg-green-400 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer"
+            onClick={() => {
+              setAuthModal("signup");
+              console.log("Sign-up button clicked!");
+            }}
+          >
+            Sign-up
+          </div>
+        )}
       </nav>
     </motion.div>
   );

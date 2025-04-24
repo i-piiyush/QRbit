@@ -6,6 +6,7 @@ import { AppContext } from "./context/AppProvider";
 import { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./Components/LandingPage";
+import AddInfo from "./Components/AddInfo";
 
 function App() {
   const { isSignedUp, isLoggedIn } = useContext(AppContext);
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/ChooseDesign" element={<ChooseDesign />} />
+        <Route path="/add-info" element={<AddInfo />} />
       </Routes>
 
       {/* Global modals */}

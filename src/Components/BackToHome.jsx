@@ -8,10 +8,10 @@ const BackToHome = () => {
   return (
     <button
       onClick={() => navigate("/")}
-      className="flex items-center gap-2 text-white bg-[#ffffff21] px-4 py-2 rounded-full backdrop-blur-xl hover:bg-white/30 transition-all"
+      className="flex items-center  text-white hover:text-green-600 bg-green-600 p-3 rounded-full backdrop-blur-xl hover:bg-white transition-all"
     >
-      <MdArrowBack className="text-lg" />
-      Back to Home
+      <MdArrowBack className="text-xl" />
+     
     </button>
   );
 };

@@ -1,16 +1,25 @@
 import { createContext, useState, useEffect } from "react";
 import { auth, db } from "../firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import AuthModal from "../Components/AuthModal";
 
+// Create the context
 export const AppContext = createContext();
 
+// AppProvider component
 const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authModal, setAuthModal] = useState(null);
+  const [selectedCardIndex, setSelectedCardIndex] = useState(null); // New state
 
+  // Monitor auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -18,6 +27,7 @@ const AppProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  // Handle SignUp
   const handleSignUp = async (formData) => {
     try {
       if (formData.password.length < 6) {
@@ -25,7 +35,11 @@ const AppProvider = ({ children }) => {
         return;
       }
 
-      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
       await setDoc(doc(db, "users", userCredential.user.uid), {
         fullName: formData.fullName,
         email: formData.email,
@@ -39,13 +53,10 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  // Handle Login
   const handleLogin = async (formData) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
       toast.success("Login Successful!");
       setAuthModal(null);
     } catch (err) {
@@ -54,9 +65,10 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  // Handle Logout
   const handleLogout = async () => {
     try {
-      console.log("Logout button clicked!"); // Debugging log
+      console.log("Logout button clicked!");
       await signOut(auth);
       setUser(null);
       toast.success("Logged out successfully.");
@@ -67,7 +79,18 @@ const AppProvider = ({ children }) => {
   };
 
   return (
-    <AppContext.Provider value={{ user, authModal, setAuthModal, handleSignUp, handleLogin, handleLogout }}>
+    <AppContext.Provider
+      value={{
+        user,
+        authModal,
+        setAuthModal,
+        handleSignUp,
+        handleLogin,
+        handleLogout,
+        selectedCardIndex,
+        setSelectedCardIndex,
+      }}
+    >
       {children}
       {authModal && <AuthModal />}
     </AppContext.Provider>

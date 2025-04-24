@@ -1,9 +1,148 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { motion, AnimatePresence } from 'framer-motion';
+import { GrLinkNext } from 'react-icons/gr';
+import { FiUploadCloud } from 'react-icons/fi';
+
+const stepVariants = {
+  initial: { x: 300, opacity: 0 },
+  animate: { x: 0, opacity: 1 },
+  exit: { x: -300, opacity: 0 },
+};
 
 const AddInfo = () => {
-  return (
-    <div className='bg-blue-300'>AddInfo</div>
-  )
-}
+  const { register, handleSubmit } = useForm();
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({});
 
-export default AddInfo
+  const onNext = (data) => {
+    setFormData({ ...formData, ...data });
+    setStep((prev) => prev + 1);
+  };
+
+  const onSubmit = (data) => {
+    const finalData = { ...formData, ...data };
+    console.log("Submitted Info:", finalData);
+  };
+
+  const inputClass = "w-full bg-black text-white py-2 px-6 rounded-md placeholder:text-gray-500 border border-green-600 focus:outline-none focus:bg-black focus:border-green-600";
+
+  const getStepContent = () => {
+    switch (step) {
+      case 1:
+        return (
+          <div>
+            <label className="block mb-2 font-semibold text-white">Your Name</label>
+            <input {...register("name", { required: true })} className={inputClass} placeholder="Enter your name" />
+          </div>
+        );
+      case 2:
+        return (
+          <div>
+            <label className="block mb-2 font-semibold text-white">Your Profession</label>
+            <input {...register("profession", { required: true })} className={inputClass} placeholder="e.g., Software Developer" />
+          </div>
+        );
+      case 3:
+        return (
+          <div>
+            <label className="block mb-2 font-semibold text-white">About Yourself</label>
+            <textarea {...register("about", { required: true, maxLength: 60 })} className={inputClass} placeholder="Tell something about yourself (max 60 words)" />
+          </div>
+        );
+      case 4:
+        return (
+          <div>
+            <label className="block mb-2 font-semibold text-white">Where do you live</label>
+            <textarea {...register("location", { required: true })} className={inputClass} placeholder="Delhi, India" />
+          </div>
+        );
+      case 5:
+        return (
+          <div>
+            <label className="block mb-2 font-semibold text-white">Number of Followers</label>
+            <input type="number" {...register("followers", { required: true })} className={inputClass} placeholder="e.g., 12000" />
+          </div>
+        );
+      case 6:
+        return (
+          <div>
+            <label className="block mb-2 font-semibold text-white">Following Count</label>
+            <input type="number" {...register("following", { required: true })} className={inputClass} placeholder="e.g., 350" />
+          </div>
+        );
+      case 7:
+        return (
+          <div>
+            <label className="block mb-2 font-semibold text-white">Average Likes</label>
+            <input type="number" {...register("likes", { required: true })} className={inputClass} placeholder="e.g., 600" />
+            <label className="block mt-4 mb-2 font-semibold text-white">Contact Link</label>
+            <input type="url" {...register("contact", { required: true })} className={inputClass} placeholder="https://yourlink.com" />
+          </div>
+        );
+      case 8:
+        return (
+          <div>
+            <label className="block mb-2 font-semibold text-white">Upload Your Image</label>
+            <div className="border-2 border-dashed border-green-600 rounded-lg w-full h-40 flex items-center justify-center text-white relative">
+              <FiUploadCloud className="text-4xl text-green-600" />
+              <input
+                type="file"
+                accept="image/*"
+                {...register("image", { required: true })}
+                className="absolute w-full h-full opacity-0 cursor-pointer"
+              />
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4 relative">
+      {/* Progress Bar */}
+      <div className="w-full max-w-md mb-4">
+        <div className="h-2 w-full bg-gray-700 rounded-full overflow-hidden">
+          <motion.div
+            className="h-2 bg-green-600 rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${(step / 8) * 100}%` }}
+            transition={{ duration: 0.4 }}
+          />
+        </div>
+        <div className="text-sm text-center text-gray-400 mt-1">
+          Step {step} of 8
+        </div>
+      </div>
+
+      <form
+        onSubmit={step === 8 ? handleSubmit(onSubmit) : handleSubmit(onNext)}
+        className="bg-black shadow-md rounded-xl p-8 w-full max-w-md overflow-hidden"
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            variants={stepVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ duration: 0.4 }}
+          >
+            {getStepContent()}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Next Button inside form */}
+        <div className="w-full flex justify-center mt-6">
+          <button type="submit" className="bg-green-600 text-white py-2 px-6 rounded-full flex gap-5 items-center">
+            {step === 8 ? "Submit" : "Next"} <GrLinkNext />
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default AddInfo;

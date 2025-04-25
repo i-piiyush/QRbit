@@ -7,6 +7,9 @@ import { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./Components/LandingPage";
 import AddInfo from "./Components/AddInfo";
+import UserCards from "./Components/UserCards";
+
+
 
 function App() {
   const { isSignedUp, isLoggedIn } = useContext(AppContext);
@@ -17,6 +20,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/ChooseDesign" element={<ChooseDesign />} />
         <Route path="/add-info" element={<AddInfo />} />
+        <Route path="/user-cards" element={<UserCards />} />
       </Routes>
 
       {/* Global modals */}

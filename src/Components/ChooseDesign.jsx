@@ -48,8 +48,8 @@ const ChooseDesign = () => {
         </h1>
       </div>
 
-      <div className="relative w-full flex justify-center flex-col pb-5 cursor-pointer">
-        <div className="flex justify-end gap-3 py-5 px-5">
+      <div className="relative w-full flex justify-center items-center flex-col pb-5 cursor-pointer">
+        <div className="flex justify-end gap-3 py-5 px-5 w-full">
           <button
             onClick={() => slider.current?.prev()}
             className="z-10 p-4 bg-black border border-green-600 hover:bg-green-600 transition-all text-white rounded-full lg:hidden"

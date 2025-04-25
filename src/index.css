@@ -71,3 +71,18 @@ a {
     display: none;
   }
 }
+
+/* Custom Toast Styles */
+.custom-toast {
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  letter-spacing: normal !important;
+  padding: 16px !important;
+  border-radius: 8px !important;
+  background: #1f1f1f !important;
+  color: white !important;
+}
+
+.custom-toast-container {
+  gap: 12px !important;
+}

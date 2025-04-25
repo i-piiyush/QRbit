@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.14.1",
+    "@cloudinary/url-gen": "^1.21.0",
+    "axios": "^1.9.0",
     "firebase": "^11.5.0",
     "framer-motion": "^12.8.2",
     "keen-slider": "^6.8.6",
@@ -24,7 +27,8 @@
     "rsuite": "^5.78.1",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.16",
-    "swiper": "^11.2.4"
+    "swiper": "^11.2.4",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

@@ -16,6 +16,7 @@
     "firebase": "^11.5.0",
     "framer-motion": "^12.8.2",
     "keen-slider": "^6.8.6",
+    "npm": "^11.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.1",

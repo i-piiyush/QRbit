@@ -1,7 +1,7 @@
 import React, { useContext } from "react"; // Importing necessary React functionalities
 import { MdOutlineArrowOutward } from "react-icons/md"; // Importing an icon from react-icons
 import Navbar from "./Navbar"; // Importing Navbar component
-import { AppContext } from "../context/AppProvider"; // Importing the AppContext for global state
+import { AppContext } from "../Context/AppProvider"; // Importing the AppContext for global state
 import { useNavigate } from "react-router-dom"; // Importing useNavigate for programmatic navigation
 
 const Section1 = () => {

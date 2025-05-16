@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { AppContext } from "../context/AppProvider";
+import { AppContext } from "../Context/AppProvider";
 import Loader from "./Loader";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';

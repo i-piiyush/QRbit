@@ -1,7 +1,7 @@
 import SignUp from "./SignUp";
 import Login from "./Login";
 import { useContext } from "react";
-import { AppContext } from "../context/AppProvider";
+import { AppContext } from "../Context/AppProvider";
 
 const AuthModal = () => {
   const { authModal, setAuthModal } = useContext(AppContext);

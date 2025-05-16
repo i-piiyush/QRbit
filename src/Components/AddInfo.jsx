@@ -6,7 +6,7 @@ import { FiUploadCloud } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { AppContext } from '../context/AppProvider';
+import { AppContext } from '../Context/AppProvider';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

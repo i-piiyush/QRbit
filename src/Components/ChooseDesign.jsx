@@ -4,16 +4,17 @@ import { useKeenSlider } from "keen-slider/react";
 import BackToHome from "./BackToHome";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { doc, updateDoc } from "firebase/firestore"; // Import Firestore functions
+import { AppContext } from "../Context/AppProvider"; // 👈 import context
+import { db } from "../firebaseConfig"; // Import Firestore reference
 
 import Card1 from "./Card1";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
 
-import { AppContext } from "../context/AppProvider" // 👈 import context
-
 const ChooseDesign = () => {
   const navigate = useNavigate();
-  const { setSelectedCardIndex } = useContext(AppContext); // 👈 access setter from context
+  const { user, setSelectedCardIndex } = useContext(AppContext); // 👈 access setter from context
 
   const [sliderRef, slider] = useKeenSlider({
     loop: false,
@@ -32,9 +33,20 @@ const ChooseDesign = () => {
     slides: { perView: 1, spacing: 16 },
   });
 
-  const handleCardClick = (index) => {
-    setSelectedCardIndex(index); // 👈 store in context
-    navigate("/add-info"); // 👈 simple route
+  const handleCardClick = async (index) => {
+    setSelectedCardIndex(index); // Store index in context
+    
+    if (user) {
+      try {
+        const userDocRef = doc(db, "users", user.uid); // Reference to the user's document
+        await updateDoc(userDocRef, { selectedCardIndex: index }); // Update Firestore
+        console.log("Design saved to Firestore!");
+      } catch (error) {
+        console.error("Error saving design to Firestore:", error);
+      }
+    }
+
+    navigate("/add-info"); // Navigate to next step
   };
 
   return (

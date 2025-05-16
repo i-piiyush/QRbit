@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import { useContext } from "react";
-import { AppContext } from "./context/AppProvider";
+import { AppContext } from "./Context/AppProvider";
 import LandingPage from "./Components/LandingPage";
 import AddInfo from "./Components/AddInfo";
 import UserCards from "./Components/UserCards";
 import ChooseDesign from "./Components/ChooseDesign";
 import SignUp from "./Components/SignUp";
 import Login from "./Components/Login";
-import RenderSelectedCard from "./Components/RenderSelectedCard";
+
 import ViewCard from "./Components/ViewCard";
 
 function App() {

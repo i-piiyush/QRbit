@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
-import { AppContext } from "../context/AppProvider";
+import { AppContext } from "../Context/AppProvider";
 
 const Navbar = () => {
   const { user, handleLogout, setAuthModal } = useContext(AppContext);

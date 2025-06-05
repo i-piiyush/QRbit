@@ -11,7 +11,7 @@ const cardComponentMap = {
   3: Card3
 };
 
-const RenderSelectedCard = () => {
+const RenderSelectedCard = (props) => {
   const { selectedCardIndex, loadingUser } = useContext(AppContext);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const RenderSelectedCard = () => {
     return <div>Invalid card selected</div>;
   }
 
-  return <SelectedCard />;
+  return <SelectedCard user={props.user} isLoading={props.isLoading}/>;
 };
 
 export default RenderSelectedCard;

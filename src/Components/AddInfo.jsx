@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GrLinkNext } from 'react-icons/gr';
 import { FiUploadCloud } from 'react-icons/fi';
+import { Loader, LoaderIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
@@ -20,11 +21,36 @@ const AddInfo = () => {
   const { register, handleSubmit } = useForm();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({});
-  const { user } = useContext(AppContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user, selectedCardIndex, loadingCardIndex } = useContext(AppContext);
   const navigate = useNavigate();
 
   const inputClass =
     'w-full bg-black text-white py-2 px-6 rounded-md placeholder:text-gray-500 border border-green-600 focus:outline-none focus:bg-black focus:border-green-600';
+
+  if (loadingCardIndex) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <LoaderIcon className="animate-spin text-white h-12 w-12"/>
+      </div>
+    );
+  }
+
+  if (!selectedCardIndex) {
+    return (
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
+        <div className="text-white text-xl mb-4 text-center">
+          No design selected. Please choose a design first.
+        </div>
+        <button
+          onClick={() => navigate('/choose-design')}
+          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+        >
+          Choose Design
+        </button>
+      </div>
+    );
+  }
 
   const formatCount = (value) => {
     const num = parseInt(value);
@@ -62,6 +88,9 @@ const AddInfo = () => {
       return;
     }
 
+    setIsSubmitting(true);
+    const toastId = toast.loading("Saving your information...");
+
     try {
       const finalData = {
         ...formData,
@@ -70,19 +99,24 @@ const AddInfo = () => {
         followers: formatCount(data.followers),
         following: formatCount(data.following),
         likes: formatCount(data.likes),
+        selectedCardIndex,
         createdAt: new Date(),
       };
 
       delete finalData.imageUrl;
 
       const userRef = doc(db, 'users', user.uid);
-      await setDoc(userRef, finalData);
+      await setDoc(userRef, finalData, { merge: true });
 
-      toast.success('User data submitted!');
+      toast.dismiss(toastId);
+      toast.success('Profile saved successfully!');
       navigate('/user-cards');
     } catch (error) {
+      toast.dismiss(toastId);
       toast.error('Submission failed. Try again.');
       console.error('Submission error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -90,7 +124,7 @@ const AddInfo = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const toastId = toast.loading("Please wait while the image uploads...", {
+    const toastId = toast.loading("Uploading image...", {
       autoClose: false,
     });
 
@@ -141,7 +175,7 @@ const AddInfo = () => {
         return (
           <div>
             <label className="block mb-2 font-semibold text-white">About Yourself</label>
-            <textarea {...register('about', { required: true, maxLength: 60 })} className={inputClass} placeholder="Tell something about yourself (max 60 words)" />
+            <textarea {...register('about', { required: true, maxLength: 270 })} className={inputClass} placeholder="Tell something about yourself (max 40 words)" />
           </div>
         );
       case 4:
@@ -179,13 +213,23 @@ const AddInfo = () => {
           <div>
             <label className="block mb-2 font-semibold text-white">Upload Your Image</label>
             <div className="border-2 border-dashed border-green-600 rounded-lg w-full h-40 flex items-center justify-center text-white relative">
-              <FiUploadCloud className="text-4xl text-green-600" />
-              <input
-                type="file"
-                accept="image/*"
-                className="absolute w-full h-full opacity-0 cursor-pointer"
-                onChange={handleImageUpload}
-              />
+              {formData.imageUrl ? (
+                <img 
+                  src={formData.imageUrl} 
+                  alt="Preview" 
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              ) : (
+                <>
+                  <FiUploadCloud className="text-4xl text-green-600" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="absolute w-full h-full opacity-0 cursor-pointer"
+                    onChange={handleImageUpload}
+                  />
+                </>
+              )}
             </div>
           </div>
         );
@@ -226,8 +270,19 @@ const AddInfo = () => {
         </AnimatePresence>
 
         <div className="w-full flex justify-center mt-6">
-          <button type="submit" className="bg-green-600 text-white py-2 px-6 rounded-full flex gap-5 items-center">
-            {step === 8 ? 'Submit' : 'Next'} <GrLinkNext />
+          <button 
+            type="submit" 
+            className="bg-green-600 text-white py-2 px-6 rounded-full flex gap-5 items-center disabled:opacity-50"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <Loader className="animate-spin h-5 w-5" />
+            ) : (
+              <>
+                {step === 8 ? 'Submit' : 'Next'} 
+                {step !== 8 && <GrLinkNext />}
+              </>
+            )}
           </button>
         </div>
       </form>
@@ -235,8 +290,14 @@ const AddInfo = () => {
       <ToastContainer
         position="top-right"
         autoClose={3000}
-        toastClassName="custom-toast"
-        className="custom-toast-container"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
       />
     </div>
   );

@@ -9,6 +9,8 @@ import SignUp from "./Components/SignUp";
 import Login from "./Components/Login";
 
 import ViewCard from "./Components/ViewCard";
+import ViewAnalytics from "./Components/ViewAnalytics";
+import ShareCard from "./Components/ShareCard";
 
 function App() {
   const { isSignedUp, isLoggedIn } = useContext(AppContext);
@@ -20,7 +22,10 @@ function App() {
         <Route path="/ChooseDesign" element={<ChooseDesign />} />
         <Route path="/add-info" element={<AddInfo />} />
         <Route path="/user-cards" element={<UserCards />} />
-        <Route path="/user-cards/view-card" element={<ViewCard />} />
+        <Route path="/user-cards/view-card/:id" element={<ViewCard />} />
+        <Route path="/user-cards/view-analytics/:id" element={<ViewAnalytics />} />
+        <Route path="/user-cards/share-card/:id" element={<ShareCard />} />
+        <Route path="/user-cards/edit-card" element={<AddInfo />} />
       </Routes>
 
       {isSignedUp && <SignUp />}

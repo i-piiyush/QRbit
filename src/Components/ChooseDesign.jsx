@@ -4,17 +4,19 @@ import { useKeenSlider } from "keen-slider/react";
 import BackToHome from "./BackToHome";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { doc, updateDoc } from "firebase/firestore"; // Import Firestore functions
-import { AppContext } from "../Context/AppProvider"; // 👈 import context
-import { db } from "../firebaseConfig"; // Import Firestore reference
-
+import { doc, updateDoc } from "firebase/firestore";
+import { AppContext } from "../Context/AppProvider";
+import { db } from "../firebaseConfig";
 import Card1 from "./Card1";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
+import { Loader } from "lucide-react";
+import { LoaderIcon } from "lucide-react";
+
 
 const ChooseDesign = () => {
   const navigate = useNavigate();
-  const { user, setSelectedCardIndex } = useContext(AppContext); // 👈 access setter from context
+  const { user, setSelectedCardIndex, loadingCardIndex } = useContext(AppContext);
 
   const [sliderRef, slider] = useKeenSlider({
     loop: false,
@@ -34,20 +36,24 @@ const ChooseDesign = () => {
   });
 
   const handleCardClick = async (index) => {
-    setSelectedCardIndex(index); // Store index in context
+    setSelectedCardIndex(index);
     
     if (user) {
       try {
-        const userDocRef = doc(db, "users", user.uid); // Reference to the user's document
-        await updateDoc(userDocRef, { selectedCardIndex: index }); // Update Firestore
+        const userDocRef = doc(db, "users", user.uid);
+        await updateDoc(userDocRef, { selectedCardIndex: index });
         console.log("Design saved to Firestore!");
       } catch (error) {
         console.error("Error saving design to Firestore:", error);
       }
     }
 
-    navigate("/add-info"); // Navigate to next step
+    navigate("/add-info");
   };
+
+  if (loadingCardIndex) {
+    return <div className="flex justify-center items-center w-full h-screen"><LoaderIcon  className="animate-spin text-white h-12 w-12" /></div> ;
+  }
 
   return (
     <div className="h-screen w-full px-5 py-3">

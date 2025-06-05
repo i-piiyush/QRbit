@@ -6,67 +6,58 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import {
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import AuthModal from "../Components/AuthModal";
 
-// Create the context
 export const AppContext = createContext();
 
-// AppProvider component
 const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [authModal, setAuthModal] = useState(null);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
+  const [loadingCardIndex, setLoadingCardIndex] = useState(true);
 
-  // Monitor auth state
+  // Monitor auth state and fetch user data
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      setLoadingUser(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  // Fetch user data on login to get the selectedCardIndex
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        const userDocSnap = await getDoc(userDocRef);
-
-        if (userDocSnap.exists()) {
-          const data = userDocSnap.data();
-          setSelectedCardIndex(
-            data.selectedCardIndex !== undefined ? data.selectedCardIndex : null
-          );
-        } else {
-          // Create user document if it doesn't exist
-          await setDoc(userDocRef, { selectedCardIndex: null }, { merge: true });
+      
+      if (currentUser) {
+        try {
+          const userDocRef = doc(db, "users", currentUser.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          
+          if (userDocSnap.exists()) {
+            const data = userDocSnap.data();
+            setSelectedCardIndex(data.selectedCardIndex || null);
+          } else {
+            await setDoc(userDocRef, { selectedCardIndex: null }, { merge: true });
+            setSelectedCardIndex(null);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
           setSelectedCardIndex(null);
         }
       } else {
         setSelectedCardIndex(null);
       }
-    };
+      
+      setLoadingUser(false);
+      setLoadingCardIndex(false);
+    });
 
-    fetchUserData();
-  }, [user]);
+    return () => unsubscribe();
+  }, []);
 
-  // Save selectedCardIndex to Firestore
+  // Save selectedCardIndex to Firestore whenever it changes
   useEffect(() => {
     const saveSelectedCardIndex = async () => {
       if (user && selectedCardIndex !== null) {
         try {
           const userDocRef = doc(db, "users", user.uid);
-          await setDoc(userDocRef, { selectedCardIndex }, { merge: true });
+          await updateDoc(userDocRef, { selectedCardIndex });
         } catch (err) {
           console.error("Error saving selectedCardIndex:", err);
         }
@@ -138,6 +129,7 @@ const AppProvider = ({ children }) => {
         handleLogout,
         selectedCardIndex,
         setSelectedCardIndex,
+        loadingCardIndex
       }}
     >
       {children}

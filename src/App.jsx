@@ -22,9 +22,8 @@ function App() {
         <Route path="/ChooseDesign" element={<ChooseDesign />} />
         <Route path="/add-info" element={<AddInfo />} />
         <Route path="/user-cards" element={<UserCards />} />
-        <Route path="/user-cards/view-card/:id" element={<ViewCard />} />
-        <Route path="/user-cards/view-analytics/:id" element={<ViewAnalytics />} />
-        <Route path="/user-cards/share-card/:id" element={<ShareCard />} />
+        <Route path="/user-cards/:userId/:cardIndex" element={<ViewCard />} />
+        <Route path="/user-cards/:userId" element={<ShareCard />} />
         <Route path="/user-cards/edit-card" element={<AddInfo />} />
       </Routes>
 

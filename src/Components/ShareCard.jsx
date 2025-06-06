@@ -1,65 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
-import { doc, getDoc, setDoc } from "firebase/firestore";
 import copy from "copy-to-clipboard";
-import { auth, db } from "../firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
+import { useParams } from "react-router-dom";
+import { LoaderIcon } from "lucide-react";
 
-const ShareCard = ({ cardId }) => {
-  const [shareUrl, setShareUrl] = useState("");
-  const [copied, setCopied] = useState(false);
-  const [totalViews, setTotalViews] = useState(0);
+const ShareCard = () => {
+  const { userId } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
+  const [cards, setCards] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [copied, setCopied] = useState(false);
 
-  // Step 1: Wait for Firebase Auth
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  // Step 2: Initialize when user and browser environment are ready
-  useEffect(() => {
-    const initializeShareCard = async () => {
+    const fetchUserCards = async () => {
       try {
-        const baseUrl =
-          typeof window !== "undefined" && window.location?.origin
-            ? window.location.origin
-            : "https://your-app.vercel.app"; // fallback
+        setLoading(true);
+        const userDocRef = doc(db, "users", userId);
+        const userDocSnap = await getDoc(userDocRef);
 
-        const url = `${baseUrl}/user-cards/view-card/${cardId}`;
-        setShareUrl(url);
-
-        const viewDocRef = doc(db, "cardViews", cardId);
-        const docSnap = await getDoc(viewDocRef);
-
-        if (docSnap.exists()) {
-          setTotalViews(docSnap.data().totalViews || 0);
-        } else {
-          await setDoc(viewDocRef, {
-            cardId,
-            ownerId: user?.uid || null,
-            totalViews: 0,
-            createdAt: new Date(),
-            lastViewed: null,
-          });
+        if (!userDocSnap.exists()) {
+          setError("User not found");
+          return;
         }
+
+        const data = userDocSnap.data();
+        if (!data.cards || data.cards.length === 0) {
+          setError("No cards found");
+          return;
+        }
+
+        setCards(data.cards);
+        // Default to first card
+        setSelectedIndex(0);
       } catch (err) {
-        console.error("Initialization error:", err);
-        setError("Failed to initialize sharing");
+        console.error(err);
+        setError("Failed to load cards");
       } finally {
         setLoading(false);
       }
     };
 
-    if (user && cardId) {
-      initializeShareCard();
-    }
-  }, [cardId, user]);
+    fetchUserCards();
+  }, [userId]);
+
+  const shareUrl = `${window.location.origin}/view/${userId}/${selectedIndex}`;
 
   const handleCopy = () => {
     copy(shareUrl);
@@ -70,31 +57,60 @@ const ShareCard = ({ cardId }) => {
   if (loading) {
     return (
       <div className="w-full h-screen flex items-center justify-center bg-black">
-        <p className="text-white">Loading...</p>
+        <LoaderIcon className="animate-spin text-white h-12 w-12" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="w-full h-screen flex items-center justify-center bg-red-200">
-        <p className="text-red-700 font-bold">{error}</p>
+      <div className="w-full h-screen flex items-center justify-center bg-black text-red-500">
+        {error}
       </div>
     );
   }
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-black px-4 text-white">
-      <h1 className="text-3xl font-bold mb-4">Share your card</h1>
-      <QRCode value={shareUrl} />
-      <p className="mt-4 break-words text-center max-w-[90%]">{shareUrl}</p>
-      <button
-        onClick={handleCopy}
-        className="mt-4 px-4 py-2 bg-green-500 rounded hover:bg-green-600 transition-all"
-      >
-        {copied ? "Copied!" : "Copy to Clipboard"}
-      </button>
-      <p className="mt-2 text-sm text-gray-400">Total Views: {totalViews}</p>
+    <div className="w-full min-h-screen flex flex-col items-center justify-center bg-black px-4 py-8 text-white">
+      <h1 className="text-3xl font-bold mb-6">Share Profile Card</h1>
+      
+      <div className="w-full max-w-md bg-gray-800 rounded-lg p-6 mb-6">
+        <div className="mb-4">
+          <label htmlFor="card-select" className="block mb-2 font-medium">
+            Select Card:
+          </label>
+          <select
+            id="card-select"
+            value={selectedIndex}
+            onChange={(e) => setSelectedIndex(Number(e.target.value))}
+            className="w-full p-2 rounded bg-gray-700 border border-gray-600"
+          >
+            {cards.map((card, index) => (
+              <option key={index} value={index}>
+                {card.title || `Card ${index + 1}`}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="p-4 bg-white rounded-lg mb-4 flex justify-center">
+          <QRCode value={shareUrl} size={200} level="H" />
+        </div>
+
+        <div className="mb-4">
+          <p className="text-sm mb-1">Shareable Link:</p>
+          <div className="p-2 bg-gray-700 rounded break-words text-sm">
+            {shareUrl}
+          </div>
+        </div>
+
+        <button
+          onClick={handleCopy}
+          className="w-full py-2 bg-green-600 hover:bg-green-700 rounded font-medium transition-colors"
+        >
+          {copied ? "Copied!" : "Copy Link"}
+        </button>
+      </div>
     </div>
   );
 };

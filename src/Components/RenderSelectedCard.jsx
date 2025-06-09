@@ -1,10 +1,8 @@
-import React, { useContext,useState,useEffect } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "../Context/AppProvider";
 import Card1 from "./Card1";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
 import { LoaderIcon } from "lucide-react";
 
 const cardComponentMap = {
@@ -13,48 +11,47 @@ const cardComponentMap = {
   3: Card3,
 };
 
-const RenderSelectedCard = () => {
-  const { selectedCardIndex, user, loadingUser } = useContext(AppContext);
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
+const RenderSelectedCard = ({ user, isLoading }) => {
+  const { selectedCardIndex } = useContext(AppContext);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (!user) return;
-      
-      try {
-        const userDocRef = doc(db, "users", user.uid);
-        const userDocSnap = await getDoc(userDocRef);
-        
-        if (userDocSnap.exists()) {
-          setUserData(userDocSnap.data());
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Use prop user data first, fallback to context if available
+  const displayUser = user || useContext(AppContext).user;
+  const displayCardIndex = user?.selectedCardIndex ?? selectedCardIndex;
 
-    fetchUserData();
-  }, [user]);
-
-  if (loadingUser || loading) {
+  if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <LoaderIcon className="animate-spin h-12 w-12 text-white" />
+      <div className="w-full h-full flex items-center justify-center">
+        <LoaderIcon className="animate-spin h-12 w-12" />
       </div>
     );
   }
 
-  if (selectedCardIndex === null) {
-    return <div>No card template selected</div>;
+  if (!displayUser) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <p>No user data available</p>
+      </div>
+    );
   }
 
-  const SelectedCard = cardComponentMap[selectedCardIndex];
-  if (!SelectedCard) return <div>Invalid card selected</div>;
+  if (displayCardIndex === null || displayCardIndex === undefined) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <p>No card template selected</p>
+      </div>
+    );
+  }
 
-  return <SelectedCard user={userData || user} isLoading={loading} />;
+  const SelectedCard = cardComponentMap[displayCardIndex];
+  if (!SelectedCard) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <p>Invalid card template selected</p>
+      </div>
+    );
+  }
+
+  return <SelectedCard user={displayUser} isLoading={false} />;
 };
 
 export default RenderSelectedCard;

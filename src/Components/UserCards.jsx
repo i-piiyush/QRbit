@@ -58,7 +58,7 @@ const UserCards = () => {
         {/* First row */}
         <div className="h-44 md:h-60 flex gap-3 px-2">
           <div
-            className="bg-black h-full w-1/2 md:w-[70%] rounded-2xl flex flex-col px-2 py-3 hover:px-10 relative group transition-all duration-300 hover:bg-white cursor-pointer"
+            className="bg-black h-full w-1/2 md:w-[70%] rounded-2xl flex flex-col px-2 py-3 hover:px-10 relative group transition-all duration-300 hover:bg-green-100 cursor-pointer"
             onClick={() => navigate(`/user-cards/view-card/${userData.id}`)}
           >
             <h1 className="text-white text-xl sm:text-3xl font-semibold transition-colors duration-300 group-hover:text-black">
@@ -70,7 +70,7 @@ const UserCards = () => {
           </div>
 
           <div
-            className="bg-black h-full w-1/2 rounded-2xl flex flex-col px-2 hover:px-10 py-3 relative group transition-all duration-300 hover:bg-white cursor-pointer"
+            className="bg-black h-full w-1/2 rounded-2xl flex flex-col px-2 hover:px-10 py-3 relative group transition-all duration-300 hover:bg-green-100 cursor-pointer"
             onClick={() => navigate("/user-cards/edit-card")}
           >
             <h1 className="text-white text-xl sm:text-3xl font-semibold transition-colors duration-300 group-hover:text-black">
@@ -86,7 +86,7 @@ const UserCards = () => {
         <div className="md:flex-row flex flex-col gap-3 md:gap-0">
           <div className="h-44 md:h-60 px-2 md:w-[30%] relative group cursor-pointer">
             <div
-              className="bg-black h-full rounded-2xl flex flex-col px-2 py-3 hover:px-10 transition-all duration-300 hover:bg-white"
+              className="bg-black h-full rounded-2xl flex flex-col px-2 py-3 hover:px-10 transition-all duration-300 hover:bg-green-100"
               onClick={() => navigate(`/user-cards/share-card/${userData.id}`)}
             >
               <h1 className="text-white text-xl sm:text-3xl font-semibold transition-colors duration-300 group-hover:text-black">
@@ -100,7 +100,7 @@ const UserCards = () => {
 
           <div className="h-44 md:h-60 px-2 md:w-[70%] relative group cursor-pointer">
             <div
-              className="bg-black h-full rounded-2xl flex flex-col px-2 py-3 hover:px-10 transition-all duration-300 hover:bg-white"
+              className="bg-black h-full rounded-2xl flex flex-col px-2 py-3 hover:px-10 transition-all duration-300 hover:bg-green-100"
               onClick={() => navigate(`/user-cards/view-analytics/${userData.id}`)}
             >
               <h1 className="text-white text-xl sm:text-3xl font-semibold transition-colors duration-300 group-hover:text-black">

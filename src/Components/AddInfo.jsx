@@ -11,6 +11,7 @@ import { AppContext } from '../Context/AppProvider';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const stepVariants = {
   initial: { x: 300, opacity: 0 },
   animate: { x: 0, opacity: 1 },
@@ -82,43 +83,58 @@ const AddInfo = () => {
     setStep((prev) => prev + 1);
   };
 
-  const onSubmit = async (data) => {
-    if (!formData.imageUrl) {
-      toast.error('Please upload an image.');
-      return;
-    }
 
-    setIsSubmitting(true);
-    const toastId = toast.loading("Saving your information...");
 
-    try {
-      const finalData = {
-        ...formData,
-        ...data,
-        image: formData.imageUrl,
-        followers: formatCount(data.followers),
-        following: formatCount(data.following),
-        likes: formatCount(data.likes),
-        selectedCardIndex,
-        createdAt: new Date(),
-      };
+const onSubmit = async (data) => {
+  if (!formData.imageUrl) {
+    toast.error('Please upload an image.');
+    return;
+  }
 
-      delete finalData.imageUrl;
+  setIsSubmitting(true);
+  const toastId = toast.loading("Saving your information...");
 
-      const userRef = doc(db, 'users', user.uid);
-      await setDoc(userRef, finalData, { merge: true });
+  try {
+    const finalData = {
+      ...formData,
+      ...data,
+      image: formData.imageUrl,
+      followers: formatCount(data.followers),
+      following: formatCount(data.following),
+      likes: formatCount(data.likes),
+      selectedCardIndex,
+      createdAt: new Date(),
+    };
 
-      toast.dismiss(toastId);
-      toast.success('Profile saved successfully!');
-      navigate('/user-cards');
-    } catch (error) {
-      toast.dismiss(toastId);
-      toast.error('Submission failed. Try again.');
-      console.error('Submission error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    delete finalData.imageUrl;
+
+    // Save user profile data
+    const userRef = doc(db, 'users', user.uid);
+    await setDoc(userRef, finalData, { merge: true });
+
+    // Create a new cardViews document
+    const cardViewsRef = doc(db, 'cardViews', user.uid); // document with user ID
+    await setDoc(cardViewsRef, {
+      userId: user.uid,
+      views: [
+        {
+          date: new Date().toISOString().split('T')[0], // "YYYY-MM-DD"
+          count: 0,
+        },
+      ],
+    });
+
+    toast.dismiss(toastId);
+    toast.success('Profile saved successfully!');
+    navigate('/user-cards');
+  } catch (error) {
+    toast.dismiss(toastId);
+    toast.error('Submission failed. Try again.');
+    console.error('Submission error:', error);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];

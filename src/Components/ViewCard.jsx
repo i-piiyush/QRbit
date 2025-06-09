@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useParams } from 'react-router-dom'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
 import { db } from '../firebaseConfig'
 import RenderSelectedCard from './RenderSelectedCard'
 import { LoaderIcon } from 'lucide-react'
+import { AppContext } from '../Context/AppProvider'
 
 const ViewCard = () => {
-  const { userId } = useParams() // Changed to match your route param
+  const { userId } = useParams()
+  const { user } = useContext(AppContext)
   const [userData, setUserData] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -20,6 +22,21 @@ const ViewCard = () => {
 
         if (userDocSnap.exists()) {
           setUserData({ id: userId, ...userDocSnap.data() })
+
+          // Avoid counting view if current user is the owner
+          if (!user || user.uid !== userId) {
+            const sessionKey = `viewed-${userId}`
+            const alreadyViewed = sessionStorage.getItem(sessionKey)
+
+            if (!alreadyViewed) {
+              const viewRef = doc(db, 'cardViews', userId)
+              await updateDoc(viewRef, {
+                views: increment(1),
+                lastViewed: new Date(),
+              }, { merge: true })
+              sessionStorage.setItem(sessionKey, 'true')
+            }
+          }
         } else {
           console.error('No user data found')
         }
@@ -31,7 +48,7 @@ const ViewCard = () => {
     }
 
     fetchData()
-  }, [userId])
+  }, [userId, user])
 
   if (loading) {
     return (
@@ -44,14 +61,14 @@ const ViewCard = () => {
   if (!userData) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <p>Card not found</p>
+        <p className="text-white">Card not found</p>
       </div>
     )
   }
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center p-4 bg-gray-950">
-      <div className="w-[350px] ">
+      <div className="w-[350px]">
         <RenderSelectedCard user={userData} isLoading={loading} />
       </div>
     </div>

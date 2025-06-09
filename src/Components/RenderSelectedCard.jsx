@@ -1,36 +1,60 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext,useState,useEffect } from "react";
 import { AppContext } from "../Context/AppProvider";
+import Card1 from "./Card1";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
-import Card1 from "./Card1";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
+import { LoaderIcon } from "lucide-react";
 
-// Map card index to components
 const cardComponentMap = {
   1: Card1,
   2: Card2,
-  3: Card3
+  3: Card3,
 };
 
-const RenderSelectedCard = (props) => {
-  const { selectedCardIndex, loadingUser } = useContext(AppContext);
+const RenderSelectedCard = () => {
+  const { selectedCardIndex, user, loadingUser } = useContext(AppContext);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("Selected Card Index:", selectedCardIndex);
-  }, [selectedCardIndex]);
+    const fetchUserData = async () => {
+      if (!user) return;
+      
+      try {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        
+        if (userDocSnap.exists()) {
+          setUserData(userDocSnap.data());
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Wait until user and card index are loaded
-  if (loadingUser || selectedCardIndex === null) {
-    return <div>Loading...</div>; // You can replace with a spinner if needed
+    fetchUserData();
+  }, [user]);
+
+  if (loadingUser || loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoaderIcon className="animate-spin h-12 w-12 text-white" />
+      </div>
+    );
+  }
+
+  if (selectedCardIndex === null) {
+    return <div>No card template selected</div>;
   }
 
   const SelectedCard = cardComponentMap[selectedCardIndex];
+  if (!SelectedCard) return <div>Invalid card selected</div>;
 
-  // Handle invalid index
-  if (!SelectedCard) {
-    return <div>Invalid card selected</div>;
-  }
-
-  return <SelectedCard user={props.user} isLoading={props.isLoading}/>;
+  return <SelectedCard user={userData || user} isLoading={loading} />;
 };
 
 export default RenderSelectedCard;

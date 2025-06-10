@@ -25,6 +25,7 @@ function App() {
         <Route path="/user-cards/view-card/:userId" element={<ViewCard />} />
         <Route path="/user-cards/share-card/:userId" element={<ShareCard />} />
         <Route path="/user-cards/edit-card" element={<AddInfo />} />
+        <Route path="/user-cards/view-analytics/:userId" element={<ViewAnalytics />} />
       </Routes>
 
       {isSignedUp && <SignUp />}

@@ -1,69 +1,73 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { useParams } from 'react-router-dom'
-import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
-import { db } from '../firebaseConfig'
-import RenderSelectedCard from './RenderSelectedCard'
-import { LoaderIcon } from 'lucide-react'
-import { AppContext } from '../Context/AppProvider'
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
+import { doc, getDoc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
+import RenderSelectedCard from './RenderSelectedCard';
+import { LoaderIcon } from 'lucide-react';
+import { AppContext } from '../Context/AppProvider';
 
 const ViewCard = () => {
-  const { userId } = useParams()
-  const { user } = useContext(AppContext)
-  const [userData, setUserData] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const { userId } = useParams();
+  const { user } = useContext(AppContext);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!userId) return
+        if (!userId) return;
 
-        const userDocRef = doc(db, 'users', userId)
-        const userDocSnap = await getDoc(userDocRef)
+        const userDocRef = doc(db, 'users', userId);
+        const userDocSnap = await getDoc(userDocRef);
 
         if (userDocSnap.exists()) {
-          setUserData({ id: userId, ...userDocSnap.data() })
+          setUserData({ id: userId, ...userDocSnap.data() });
 
-          // Avoid counting view if current user is the owner
           if (!user || user.uid !== userId) {
-            const sessionKey = `viewed-${userId}`
-            const alreadyViewed = sessionStorage.getItem(sessionKey)
-
-            if (!alreadyViewed) {
-              const viewRef = doc(db, 'cardViews', userId)
-              await updateDoc(viewRef, {
-                views: increment(1),
-                lastViewed: new Date(),
-              }, { merge: true })
-              sessionStorage.setItem(sessionKey, 'true')
+            const sessionKey = `viewed-${userId}`;
+            if (!sessionStorage.getItem(sessionKey)) {
+              const viewRef = doc(db, 'cardViews', userId);
+              const viewHistoryRef = collection(db, `cardViews/${userId}/viewHistory`);
+              
+              const batch = writeBatch(db);
+              
+              // Get current total or default to 0
+              const viewDoc = await getDoc(viewRef);
+              const currentTotal = viewDoc.exists() ? (viewDoc.data().totalViews || 0) : 0;
+              const newTotal = currentTotal + 1;
+              
+              // Update main view document
+              batch.set(viewRef, {
+                totalViews: newTotal,
+                lastViewed: serverTimestamp()
+              }, { merge: true });
+              
+              // Add to view history
+              batch.set(doc(viewHistoryRef), {
+                timestamp: serverTimestamp(),
+                cumulativeViews: newTotal,
+                dailyIncrement: 1
+              });
+              
+              await batch.commit();
+              sessionStorage.setItem(sessionKey, 'true');
             }
           }
-        } else {
-          console.error('No user data found')
         }
       } catch (error) {
-        console.error('Error fetching user data:', error)
+        console.error('Error updating view count:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [userId, user])
+    fetchData();
+  }, [userId, user]);
 
   if (loading) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <LoaderIcon className="animate-spin h-12 w-12 text-white" />
-      </div>
-    )
-  }
-
-  if (!userData) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <p className="text-white">Card not found</p>
-      </div>
-    )
+    return <div className="w-full h-screen flex items-center justify-center">
+      <LoaderIcon className="animate-spin h-12 w-12 text-white" />
+    </div>;
   }
 
   return (
@@ -72,7 +76,7 @@ const ViewCard = () => {
         <RenderSelectedCard user={userData} isLoading={loading} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ViewCard
+export default ViewCard;

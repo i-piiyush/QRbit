@@ -145,7 +145,7 @@ const ViewAnalytics = () => {
           transition={{ duration: 0.6, type: 'spring', damping: 10 }}
         >
           <h1 className="text-3xl sm:text-4xl font-bold text-center text-white">
-            View <span className="text-green-400">Analytics</span>
+            View Analytics
           </h1>
           <motion.p 
             className="text-center text-gray-400"
@@ -302,14 +302,7 @@ const ViewAnalytics = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          <div className="bg-gray-900 p-4 rounded-2xl">
-            <p className="text-gray-400 text-sm">Avg. Daily</p>
-            <p className="text-xl font-semibold text-white">24</p>
-          </div>
-          <div className="bg-gray-900 p-4 rounded-2xl">
-            <p className="text-gray-400 text-sm">Peak Time</p>
-            <p className="text-xl font-semibold text-white">14:00</p>
-          </div>
+         
         </motion.div>
       </div>
     </motion.div>

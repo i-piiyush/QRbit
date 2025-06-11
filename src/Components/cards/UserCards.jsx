@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { ArrowUpRight, LoaderIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../Context/AppProvider";
+import { AppContext } from "../../Context/AppProvider";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { db } from "../../firebase/firebaseConfig";
 
 const UserCards = () => {
   const { user, loadingUser } = useContext(AppContext);

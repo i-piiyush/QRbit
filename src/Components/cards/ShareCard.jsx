@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, increment, collection, addDoc, serverTimestamp, writeBatch } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { db } from '../../firebase/firebaseConfig';
 import QRCode from 'react-qr-code';
-import { AppContext } from '../Context/AppProvider';
+import { AppContext } from '../../Context/AppProvider';
 import { LoaderIcon, CopyIcon, Share2Icon } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

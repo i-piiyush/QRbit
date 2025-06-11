@@ -1,9 +1,9 @@
 import React from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import Card1 from "./Card1";
-import Card2 from "./Card2";
-import Card3 from "./Card3";
+import Card1 from "../cards/Card1";
+import Card2 from "../cards/Card2";
+import Card3 from "../cards/Card3";
 
 const CustomSwiper = () => {
   const [sliderRef] = useKeenSlider({

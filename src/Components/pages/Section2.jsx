@@ -1,5 +1,5 @@
 import React from "react";
-import Swiper from "./CustomSwiper";
+import Swiper from "../common/CustomSwiper";
 
 
 const Section2 = () => {

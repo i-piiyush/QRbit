@@ -1,15 +1,15 @@
 import React, { useRef, useContext } from "react";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
-import BackToHome from "./BackToHome";
+import BackToHome from "../pages/BackToHome";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
-import { AppContext } from "../Context/AppProvider";
-import { db } from "../firebaseConfig";
-import Card1 from "./Card1";
-import Card2 from "./Card2";
-import Card3 from "./Card3";
+import { AppContext } from "../../Context/AppProvider";
+import { db } from "../../firebase/firebaseConfig";
+import Card1 from "../cards/Card1";
+import Card2 from "../cards/Card2";
+import Card3 from "../cards/Card3";
 import { Loader } from "lucide-react";
 import { LoaderIcon } from "lucide-react";
 

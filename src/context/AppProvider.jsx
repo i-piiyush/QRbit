@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { auth, db } from "../firebaseConfig";
+import { auth, db } from "../firebase/firebaseConfig";
 import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
-import AuthModal from "../Components/AuthModal";
+import AuthModal from "../Components/auth/AuthModal";
 
 export const AppContext = createContext();
 

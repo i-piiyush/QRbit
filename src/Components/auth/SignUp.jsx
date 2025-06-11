@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
-import { AppContext } from "../Context/AppProvider";
-import Loader from "./Loader";
+import { AppContext } from "../../Context/AppProvider";
+import Loader from "../common/Loader";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-const Login = () => {
-  const { handleLogin, setAuthModal } = useContext(AppContext);
-  const [formData, setFormData] = useState({ email: "", password: "" });
+const SignUp = () => {
+  const { handleSignUp, setAuthModal } = useContext(AppContext);
+  const [formData, setFormData] = useState({ fullName: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -17,10 +17,10 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await handleLogin(formData);
-      toast.success("Login successful!");
+      const result = await handleSignUp(formData);
+      toast.success("Signup successful!");
     } catch (err) {
-      toast.error("Login failed. Check your credentials.");
+      toast.error("Signup failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -37,6 +37,15 @@ const Login = () => {
 
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
+          type="text"
+          name="fullName"
+          placeholder="Full Name"
+          value={formData.fullName}
+          onChange={handleChange}
+          className="border border-gray-300 p-2 rounded-lg w-full"
+          required
+        />
+        <input
           type="email"
           name="email"
           placeholder="Email Address"
@@ -48,7 +57,7 @@ const Login = () => {
         <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="Password (min 6 chars)"
           value={formData.password}
           onChange={handleChange}
           className="border border-gray-300 p-2 rounded-lg w-full"
@@ -58,21 +67,21 @@ const Login = () => {
           type="submit"
           className="bg-green-500 h-10 text-white p-2 rounded-lg w-full hover:bg-green-600 flex justify-center items-center"
         >
-          {loading ? <Loader /> : "Login"}
+          {loading ? <Loader /> : "Sign Up"}
         </button>
       </form>
 
       <p className="text-center text-sm text-gray-600 mt-3">
-        Don't have an account?{" "}
+        Already have an account?{" "}
         <span
           className="text-green-500 cursor-pointer hover:underline"
-          onClick={() => setAuthModal("signup")}
+          onClick={() => setAuthModal("login")}
         >
-          Sign Up
+          Login
         </span>
       </p>
     </div>
   );
 };
 
-export default Login;
+export default SignUp;

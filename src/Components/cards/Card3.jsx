@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
-import Btn from "./Btn";
+import Btn from "../common/Btn";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { Loader } from "lucide-react";

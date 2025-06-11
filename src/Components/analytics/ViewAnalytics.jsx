@@ -8,7 +8,7 @@ import {
   doc,
   getDoc,
 } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { db } from '../../firebase/firebaseConfig';
 import {
   BarChart,
   Bar,

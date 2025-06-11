@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
-import { AppContext } from "../Context/AppProvider";
+import { AppContext } from "../../Context/AppProvider";
 
 const Navbar = () => {
   const { user, handleLogout, setAuthModal } = useContext(AppContext);
@@ -25,7 +25,7 @@ const Navbar = () => {
 
   return (
     <motion.div
-      className="fixed bottom-[5%] left-0 w-full flex justify-center items-center z-50 text-white text-center"
+      className="fixed bottom-[5%] left-0 w-full flex justify-center items-center z-[9999] text-white text-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
       transition={{ duration: 0.5 }}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoIosArrowUp } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
-import Btn from "./Btn";
+import Btn from "../common/Btn";
 import { motion, useMotionValue } from "framer-motion";
 import { useLocation } from "react-router-dom";
 

@@ -1,16 +1,16 @@
 import { Route, Routes } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "./Context/AppProvider";
-import LandingPage from "./Components/LandingPage";
-import AddInfo from "./Components/AddInfo";
-import UserCards from "./Components/UserCards";
-import ChooseDesign from "./Components/ChooseDesign";
-import SignUp from "./Components/SignUp";
-import Login from "./Components/Login";
+import LandingPage from "./Components/pages/LandingPage";
+import AddInfo from "./Components/pages/AddInfo";
+import UserCards from "./Components/cards/UserCards";
+import ChooseDesign from "./Components/selection/ChooseDesign";
+import SignUp from "./Components/auth/SignUp";
+import Login from "./Components/auth/Login";
 
-import ViewCard from "./Components/ViewCard";
-import ViewAnalytics from "./Components/ViewAnalytics";
-import ShareCard from "./Components/ShareCard";
+import ViewCard from "./Components/cards/ViewCard";
+import ViewAnalytics from "./Components/analytics/ViewAnalytics";
+import ShareCard from "./Components/cards/ShareCard";
 
 function App() {
   const { isSignedUp, isLoggedIn } = useContext(AppContext);

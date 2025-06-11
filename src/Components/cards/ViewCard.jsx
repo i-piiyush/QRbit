@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
-import RenderSelectedCard from './RenderSelectedCard';
+import { db } from '../../firebase/firebaseConfig';
+import RenderSelectedCard from '../selection/RenderSelectedCard';
 import { LoaderIcon } from 'lucide-react';
-import { AppContext } from '../Context/AppProvider';
+import { AppContext } from '../../Context/AppProvider';
 
 const ViewCard = () => {
   const { userId } = useParams();

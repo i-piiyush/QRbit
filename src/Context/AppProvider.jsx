@@ -7,7 +7,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import AuthModal from "../Components/auth/AuthModal";
 
 export const AppContext = createContext();
@@ -19,19 +21,17 @@ const AppProvider = ({ children }) => {
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
   const [loadingCardIndex, setLoadingCardIndex] = useState(true);
 
-  // Monitor auth state and fetch user data
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      
+
       if (currentUser) {
         try {
           const userDocRef = doc(db, "users", currentUser.uid);
           const userDocSnap = await getDoc(userDocRef);
-          
+
           if (userDocSnap.exists()) {
-            const data = userDocSnap.data();
-            setSelectedCardIndex(data.selectedCardIndex || null);
+            setSelectedCardIndex(userDocSnap.data().selectedCardIndex || null);
           } else {
             await setDoc(userDocRef, { selectedCardIndex: null }, { merge: true });
             setSelectedCardIndex(null);
@@ -43,7 +43,7 @@ const AppProvider = ({ children }) => {
       } else {
         setSelectedCardIndex(null);
       }
-      
+
       setLoadingUser(false);
       setLoadingCardIndex(false);
     });
@@ -51,7 +51,6 @@ const AppProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  // Save selectedCardIndex to Firestore whenever it changes
   useEffect(() => {
     const saveSelectedCardIndex = async () => {
       if (user && selectedCardIndex !== null) {
@@ -70,7 +69,7 @@ const AppProvider = ({ children }) => {
   const handleSignUp = async (formData) => {
     try {
       if (formData.password.length < 6) {
-        toast.error("Password should be at least 6 characters.");
+        toast.error("Password must be at least 6 characters.");
         return;
       }
 
@@ -86,22 +85,52 @@ const AppProvider = ({ children }) => {
         selectedCardIndex: null,
       });
 
-      toast.success("Sign Up Successful!");
+      toast.success("Sign up successful!");
       setAuthModal(null);
     } catch (err) {
-      toast.error("Something went wrong.");
-      console.error(err);
+      const errorCode = err.code;
+
+      switch (errorCode) {
+        case "auth/email-already-in-use":
+          toast.error("Email is already in use.");
+          break;
+        case "auth/invalid-email":
+          toast.error("Invalid email address.");
+          break;
+        case "auth/weak-password":
+          toast.error("Password is too weak.");
+          break;
+        default:
+          toast.error("Sign up failed. Try again.");
+      }
+
+      console.error("Signup error:", err);
     }
   };
 
   const handleLogin = async (formData) => {
     try {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      toast.success("Login Successful!");
+      toast.success("Login successful!");
       setAuthModal(null);
     } catch (err) {
-      toast.error("Invalid email or password.");
-      console.error(err);
+      const errorCode = err.code;
+
+      switch (errorCode) {
+        case "auth/user-not-found":
+          toast.error("No user found with this email.");
+          break;
+        case "auth/wrong-password":
+          toast.error("Incorrect password.");
+          break;
+        case "auth/invalid-email":
+          toast.error("Invalid email format.");
+          break;
+        default:
+          toast.error("Login failed. Try again.");
+      }
+
+      console.error("Login error:", err);
     }
   };
 
@@ -129,7 +158,7 @@ const AppProvider = ({ children }) => {
         handleLogout,
         selectedCardIndex,
         setSelectedCardIndex,
-        loadingCardIndex
+        loadingCardIndex,
       }}
     >
       {children}

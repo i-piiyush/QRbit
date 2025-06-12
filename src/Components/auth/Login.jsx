@@ -6,10 +6,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { handleLogin } = useContext(AppContext);
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const { handleLogin, user } = useContext(AppContext);
+  const [formData, setFormData] = useState({ 
+    email: "", 
+    password: "" 
+  });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  React.useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,11 +29,12 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await handleLogin(formData);
-      toast.success("Login successful!");
-      navigate('/user-cards');
+      const success = await handleLogin(formData);
+      if (success) {
+        navigate('/'); // Redirect to home after successful login
+      }
     } catch (err) {
-      toast.error("Login failed. Check your credentials.");
+      toast.error("Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -32,12 +43,7 @@ const Login = () => {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-center mb-6 text-green-600">Login</h2>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        toastClassName="custom-toast"
-        className="custom-toast-container"
-      />
+      <ToastContainer position="top-right" autoClose={3000} />
 
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
@@ -69,12 +75,12 @@ const Login = () => {
 
       <p className="text-center text-sm text-gray-600 mt-3">
         Don't have an account?{" "}
-        <span
-          className="text-green-500 cursor-pointer hover:underline"
+        <button
+          className="text-green-500 cursor-pointer hover:underline bg-transparent border-none"
           onClick={() => navigate('/signup')}
         >
           Sign Up
-        </span>
+        </button>
       </p>
     </div>
   );

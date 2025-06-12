@@ -11,6 +11,7 @@ import ViewCard from "./Components/cards/ViewCard";
 import ViewAnalytics from "./Components/analytics/ViewAnalytics";
 import ShareCard from "./Components/cards/ShareCard";
 import Loader from "./Components/common/Loader";
+import { ToastContainer } from "react-toastify";
 
 function ProtectedRoute({ children }) {
   const { user, loadingUser } = useContext(AppContext);
@@ -66,6 +67,13 @@ function App() {
           </ProtectedRoute>
         } />
       </Routes>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        pauseOnHover
+        pauseOnFocusLoss={false}
+        closeOnClick
+      />
     </div>
   );
 }

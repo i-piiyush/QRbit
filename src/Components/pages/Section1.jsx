@@ -18,7 +18,7 @@ const Section1 = () => {
       navigate("/ChooseDesign");
     } else {
       // If no user is logged in, show signup modal
-      setAuthModal("signup");
+      navigate("/signup");
     }
   };
 

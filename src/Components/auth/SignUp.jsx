@@ -3,11 +3,13 @@ import { AppContext } from "../../Context/AppProvider";
 import Loader from "../common/Loader";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const { handleSignUp, setAuthModal } = useContext(AppContext);
+  const { handleSignUp } = useContext(AppContext);
   const [formData, setFormData] = useState({ fullName: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,8 +19,9 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const result = await handleSignUp(formData);
+      await handleSignUp(formData);
       toast.success("Signup successful!");
+      navigate('/user-cards');
     } catch (err) {
       toast.error("Signup failed. Please try again.");
     } finally {
@@ -27,7 +30,8 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-center mb-6 text-green-600">Sign Up</h2>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -62,10 +66,12 @@ const SignUp = () => {
           onChange={handleChange}
           className="border border-gray-300 p-2 rounded-lg w-full"
           required
+          minLength={6}
         />
         <button
           type="submit"
           className="bg-green-500 h-10 text-white p-2 rounded-lg w-full hover:bg-green-600 flex justify-center items-center"
+          disabled={loading}
         >
           {loading ? <Loader /> : "Sign Up"}
         </button>
@@ -75,7 +81,7 @@ const SignUp = () => {
         Already have an account?{" "}
         <span
           className="text-green-500 cursor-pointer hover:underline"
-          onClick={() => setAuthModal("login")}
+          onClick={() => navigate('/login')}
         >
           Login
         </span>

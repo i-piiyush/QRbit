@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import { AppContext } from "../../Context/AppProvider";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { user, handleLogout, setAuthModal } = useContext(AppContext);
+  const { user, handleLogout } = useContext(AppContext);
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
   let scrollTimeout;
 
   useEffect(() => {
@@ -41,7 +43,6 @@ const Navbar = () => {
           <a href="#features">Features</a>
         </div>
 
-        {/* Conditional Rendering for Sign-up / Logout */}
         {user ? (
           <div
             className="bg-red-500 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer"
@@ -52,10 +53,7 @@ const Navbar = () => {
         ) : (
           <div
             className="bg-green-400 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer"
-            onClick={() => {
-              setAuthModal("signup");
-              console.log("Sign-up button clicked!");
-            }}
+            onClick={() => navigate('/signup')}
           >
             Sign-up
           </div>

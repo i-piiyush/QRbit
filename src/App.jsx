@@ -12,6 +12,7 @@ import ViewAnalytics from "./Components/analytics/ViewAnalytics";
 import ShareCard from "./Components/cards/ShareCard";
 import Loader from "./Components/common/Loader";
 import { ToastContainer } from "react-toastify";
+import NotFound from "./Components/not found/NotFound";
 
 function ProtectedRoute({ children }) {
   const { user, loadingUser } = useContext(AppContext);
@@ -65,7 +66,9 @@ function App() {
           <ProtectedRoute>
             <ViewAnalytics />
           </ProtectedRoute>
+           
         } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer
         position="top-center"

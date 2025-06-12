@@ -41,47 +41,67 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-6 text-green-600">Login</h2>
-      <ToastContainer position="top-right" autoClose={3000} />
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
+          <p className="text-gray-400">Sign in to continue</p>
+        </div>
 
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          value={formData.email}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 rounded-lg w-full"
-          required
+        <ToastContainer 
+          position="top-right" 
+          autoClose={3000} 
+          toastClassName="bg-gray-800 text-white"
+          progressClassName="bg-green-400"
         />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 rounded-lg w-full"
-          required
-        />
-        <button
-          type="submit"
-          className="bg-green-500 h-10 text-white p-2 rounded-lg w-full hover:bg-green-600 flex justify-center items-center"
-          disabled={loading}
-        >
-          {loading ? <Loader /> : "Login"}
-        </button>
-      </form>
 
-      <p className="text-center text-sm text-gray-600 mt-3">
-        Don't have an account?{" "}
-        <button
-          className="text-green-500 cursor-pointer hover:underline bg-transparent border-none"
-          onClick={() => navigate('/signup')}
-        >
-          Sign Up
-        </button>
-      </p>
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-5 py-3 bg-gray-800 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:bg-gray-700 transition-all"
+                required
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-5 py-3 bg-gray-800 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:bg-gray-700 transition-all"
+                required
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-3 px-4 bg-green-400 hover:bg-green-500 text-black font-semibold rounded-xl transition-all active:scale-95 flex justify-center items-center"
+            disabled={loading}
+          >
+            {loading ? <Loader /> : "Sign In"}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-gray-400">
+            Don't have an account?{" "}
+            <button
+              className="text-green-400 font-semibold hover:text-green-300 transition-all bg-transparent border-none cursor-pointer"
+              onClick={() => navigate('/signup')}
+            >
+              Sign Up
+            </button>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

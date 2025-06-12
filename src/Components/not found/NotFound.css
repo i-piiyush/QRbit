@@ -1,0 +1,52 @@
+/* NotFound.css */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+.font-terminal {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Cursor blinking handled inline */
+
+/* Glitch effect */
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  color: lime;
+  background: black;
+}
+.glitch::before {
+  animation: glitchTop 1s infinite linear alternate-reverse;
+  top: -1px;
+}
+.glitch::after {
+  animation: glitchBottom 1s infinite linear alternate-reverse;
+  top: 1px;
+}
+
+@keyframes glitchTop {
+  0% {
+    clip-path: inset(0 0 90% 0);
+    transform: translate(-2px, -2px);
+  }
+  100% {
+    clip-path: inset(80% 0 0 0);
+    transform: translate(2px, 2px);
+  }
+}
+@keyframes glitchBottom {
+  0% {
+    clip-path: inset(80% 0 0 0);
+    transform: translate(2px, -2px);
+  }
+  100% {
+    clip-path: inset(0 0 90% 0);
+    transform: translate(-2px, 2px);
+  }
+}

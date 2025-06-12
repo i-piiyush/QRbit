@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"; // Importing useNavigate for pro
 
 const Section1 = () => {
   // Destructuring user and setAuthModal from AppContext
-  const { user, setAuthModal } = useContext(AppContext);
+  const { user} = useContext(AppContext);
 
   // Initializing useNavigate hook for navigation
   const navigate = useNavigate();

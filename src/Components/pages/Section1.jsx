@@ -5,7 +5,7 @@ import { AppContext } from "../../Context/AppProvider"; // Importing the AppCont
 import { useNavigate } from "react-router-dom"; // Importing useNavigate for programmatic navigation
 
 const Section1 = () => {
-  // Destructuring user and setAuthModal from AppContext
+  // Destructuring user from AppContext
   const { user} = useContext(AppContext);
 
   // Initializing useNavigate hook for navigation

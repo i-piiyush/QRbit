@@ -10,7 +10,6 @@ import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import AuthModal from "../Components/auth/AuthModal";
 
 export const AppContext = createContext();
 
@@ -123,8 +122,11 @@ const AppProvider = ({ children }) => {
         case "auth/wrong-password":
           toast.error("Incorrect password.");
           break;
-        case "auth/invalid-email":
+        case "auth/invalid-credencial":
           toast.error("Invalid email format.");
+          break;
+        case "auth/too-many-requests":
+          toast.error("too may attempts, please try again later")
           break;
         default:
           toast.error("Login failed. Try again.");

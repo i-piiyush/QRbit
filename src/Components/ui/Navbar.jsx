@@ -2,12 +2,39 @@ import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import { AppContext } from "../../Context/AppProvider";
 import { useNavigate } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase/firebaseConfig";
 
 const Navbar = () => {
+  const getUserData = async (userId) => {
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const userSnap = await getDoc(userDocRef);
+
+      if (userSnap.exists()) {
+        console.log(userSnap.data());
+
+        return userSnap.data();
+      } else {
+        console.log("no such doc find");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const { user, handleLogout } = useContext(AppContext);
   const [isVisible, setIsVisible] = useState(false);
+  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
   const navigate = useNavigate();
   let scrollTimeout;
+
+  useEffect(() => {
+    if (user) {
+      getUserData(user.uid).then((data) => {
+        setSelectedCardIndex(data.selectedCardIndex);
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,8 +63,19 @@ const Navbar = () => {
         <div className="bg-white h-full w-[25%] rounded-lg flex justify-center items-center text-3xl text-black font-semibold">
           <h1 className="text-green-400">Qb</h1>.
         </div>
-        <div className="border border-green-400/15 hover:border-green-400 transition-all duration-300 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer" onClick={() => navigate('/user-cards')} >
-        <a>Your<br />card</a>
+        <div
+          className="border border-green-400/15 hover:border-green-400 transition-all duration-300 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer"
+          onClick={() =>
+            selectedCardIndex == null
+              ? navigate("/ChooseDesign")
+              : navigate("/user-cards")
+          }
+        >
+          <a>
+            Your
+            <br />
+            card
+          </a>
         </div>
         <div className="border border-green-400/15 hover:border-green-400 transition-all duration-300 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer">
           <a href="#features">Features</a>
@@ -53,7 +91,7 @@ const Navbar = () => {
         ) : (
           <div
             className="bg-green-400 h-full w-[25%] rounded-lg flex justify-center items-center text-md text-white font-medium cursor-pointer"
-            onClick={() => navigate('/signup')}
+            onClick={() => navigate("/signup")}
           >
             Sign-up
           </div>

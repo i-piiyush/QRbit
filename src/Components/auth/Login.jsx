@@ -1,15 +1,16 @@
 import React, { useState, useContext } from "react";
 import { AppContext } from "../../Context/AppProvider";
-import Loader from "../common/Loader";
+import { Ring } from "@uiball/loaders";
+import "ldrs/react/Ring.css"
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { handleLogin, user } = useContext(AppContext);
-  const [formData, setFormData] = useState({ 
-    email: "", 
-    password: "" 
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Login = () => {
   // Redirect if already logged in
   React.useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate("/");
     }
   }, [user, navigate]);
 
@@ -31,10 +32,11 @@ const Login = () => {
     try {
       const success = await handleLogin(formData);
       if (success) {
-        navigate('/'); // Redirect to home after successful login
+        navigate("/"); // Redirect to home after successful login
       }
     } catch (err) {
-      toast.error("Login failed. Please try again.");
+     console.log("error :", err);
+     
     } finally {
       setLoading(false);
     }
@@ -48,9 +50,9 @@ const Login = () => {
           <p className="text-gray-400">Sign in to continue</p>
         </div>
 
-        <ToastContainer 
-          position="top-right" 
-          autoClose={3000} 
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
           toastClassName="bg-gray-800 text-white"
           progressClassName="bg-green-400"
         />
@@ -83,10 +85,24 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full py-3 px-4 bg-green-400 hover:bg-green-500 text-black font-semibold rounded-xl transition-all active:scale-95 flex justify-center items-center"
+            className={`w-full py-3 px-6 bg-green-400 hover:bg-green-500 text-black font-semibold rounded-xl transition-all active:scale-95 flex ${loading?"justify-between" : "justify-center"} items-center`}
             disabled={loading}
           >
-            {loading ? <Loader /> : "Sign In"}
+            {loading ? (
+              <>
+                <p>Sign in</p>
+                <Ring
+                size={20}
+                speed={0.8}
+                stroke="1"
+                strokeLength="0.25"
+                bgOpacity="0.1"
+                color="white"
+                />
+              </>
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
 
@@ -95,7 +111,7 @@ const Login = () => {
             Don't have an account?{" "}
             <button
               className="text-green-400 font-semibold hover:text-green-300 transition-all bg-transparent border-none cursor-pointer"
-              onClick={() => navigate('/signup')}
+              onClick={() => navigate("/signup")}
             >
               Sign Up
             </button>

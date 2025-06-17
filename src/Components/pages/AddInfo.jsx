@@ -44,7 +44,7 @@ const AddInfo = () => {
           No design selected. Please choose a design first.
         </div>
         <button
-          onClick={() => navigate('/choose-design')}
+          onClick={() => navigate('/ChooseDesign')}
           className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
         >
           Choose Design

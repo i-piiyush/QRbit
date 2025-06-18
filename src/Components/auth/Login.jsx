@@ -18,7 +18,7 @@ const Login = () => {
   // Redirect if already logged in
   React.useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/user-cards");
     }
   }, [user, navigate]);
 
@@ -32,7 +32,7 @@ const Login = () => {
     try {
       const success = await handleLogin(formData);
       if (success) {
-        navigate("/"); // Redirect to home after successful login
+      
       }
     } catch (err) {
       console.log("error :", err);

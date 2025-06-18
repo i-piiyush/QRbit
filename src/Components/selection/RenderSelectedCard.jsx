@@ -3,7 +3,7 @@ import { AppContext } from "../../Context/AppProvider";
 import Card1 from "../cards/Card1";
 import Card2 from "../cards/Card2";
 import Card3 from "../cards/Card3";
-import { LoaderIcon } from "lucide-react";
+import { Ring } from "@uiball/loaders";
 import { useNavigate } from "react-router-dom";
 
 
@@ -23,7 +23,14 @@ const navigate = useNavigate()
   if (isLoading) {
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <LoaderIcon className="animate-spin h-12 w-12" />
+       <div className="flex justify-center items-center w-full h-screen"><Ring
+              size={50}
+              speed={0.8}
+              stroke="1"
+              strokeLength="0.25"
+              bgOpacity="0.1"
+              color="white"
+            /></div>
       </div>
     );
   }

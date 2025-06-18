@@ -18,7 +18,7 @@ const SignUp = () => {
   // Redirect if already logged in
   React.useEffect(() => {
     if (user) {
-      navigate("/user-cards");
+      navigate("/ChooseDesign");
     }
   }, [user, navigate]);
 
@@ -31,9 +31,7 @@ const SignUp = () => {
     setLoading(true);
     try {
       const success = await handleSignUp(formData);
-      if (success) {
-        navigate("/"); // Redirect to home after successful signup
-      }
+     
     } catch (err) {
       toast.error("Signup failed. Please try again.");
     } finally {

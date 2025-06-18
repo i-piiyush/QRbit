@@ -10,8 +10,7 @@ import { db } from "../../firebase/firebaseConfig";
 import Card1 from "../cards/Card1";
 import Card2 from "../cards/Card2";
 import Card3 from "../cards/Card3";
-import { Loader } from "lucide-react";
-import { LoaderIcon } from "lucide-react";
+import { Ring } from "@uiball/loaders";
 
 
 const ChooseDesign = () => {
@@ -52,7 +51,14 @@ const ChooseDesign = () => {
   };
 
   if (loadingCardIndex) {
-    return <div className="flex justify-center items-center w-full h-screen"><LoaderIcon  className="animate-spin text-white h-12 w-12" /></div> ;
+    return <div className="flex justify-center items-center w-full h-screen"><Ring
+              size={50}
+              speed={0.8}
+              stroke="1"
+              strokeLength="0.25"
+              bgOpacity="0.1"
+              color="white"
+            /></div> ;
   }
 
   return (

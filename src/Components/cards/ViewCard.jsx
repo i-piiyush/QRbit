@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { doc, getDoc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 import RenderSelectedCard from '../selection/RenderSelectedCard';
-import { LoaderIcon } from 'lucide-react';
+import { Ring } from '@uiball/loaders';
 import { AppContext } from '../../Context/AppProvider';
 
 const ViewCard = () => {
@@ -66,7 +66,14 @@ const ViewCard = () => {
 
   if (loading) {
     return <div className="w-full h-screen flex items-center justify-center">
-      <LoaderIcon className="animate-spin h-12 w-12 text-white" />
+       <Ring
+                                size={50}
+                                speed={0.8}
+                                stroke="1"
+                                strokeLength="0.25"
+                                bgOpacity="0.1"
+                                color="white"
+                              />
     </div>;
   }
 

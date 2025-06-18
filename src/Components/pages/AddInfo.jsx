@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GrLinkNext } from 'react-icons/gr';
 import { FiUploadCloud } from 'react-icons/fi';
-import { Loader, LoaderIcon } from 'lucide-react';
+import { Ring } from '@uiball/loaders';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
@@ -32,7 +32,14 @@ const AddInfo = () => {
   if (loadingCardIndex) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <LoaderIcon className="animate-spin text-white h-12 w-12"/>
+         <Ring
+                          size={50}
+                          speed={0.8}
+                          stroke="1"
+                          strokeLength="0.25"
+                          bgOpacity="0.1"
+                          color="white"
+                        />
       </div>
     );
   }
@@ -292,7 +299,14 @@ const onSubmit = async (data) => {
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <Loader className="animate-spin h-5 w-5" />
+            <Ring
+                          size={20}
+                          speed={0.8}
+                          stroke="1"
+                          strokeLength="0.25"
+                          bgOpacity="0.1"
+                          color="white"
+                        />
             ) : (
               <>
                 {step === 8 ? 'Submit' : 'Next'} 

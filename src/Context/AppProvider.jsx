@@ -85,7 +85,7 @@ const AppProvider = ({ children }) => {
       });
 
       toast.success("Sign up successful!");
-      setAuthModal(null);
+      
     } catch (err) {
       const errorCode = err.code;
 
@@ -122,8 +122,8 @@ const AppProvider = ({ children }) => {
         case "auth/wrong-password":
           toast.error("Incorrect password.");
           break;
-        case "auth/invalid-credencial":
-          toast.error("Invalid email format.");
+        case "auth/invalid-credential":
+          toast.error("this account does not exists");
           break;
         case "auth/too-many-requests":
           toast.error("too may attempts, please try again later")

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { ArrowUpRight, LoaderIcon } from "lucide-react";
+import { ArrowUpRight} from "lucide-react";
+import { Ring } from "@uiball/loaders";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context/AppProvider";
 import { doc, getDoc } from "firebase/firestore";
@@ -37,7 +38,14 @@ const UserCards = () => {
   if (loadingUser || loading || !userData) {
     return (
       <div className="w-full h-screen flex items-center justify-center bg-black">
-        <LoaderIcon className="animate-spin text-white h-12 w-12" />
+         <Ring
+                          size={50}
+                          speed={0.8}
+                          stroke="1"
+                          strokeLength="0.25"
+                          bgOpacity="0.1"
+                          color="white"
+                        />
       </div>
     );
   }

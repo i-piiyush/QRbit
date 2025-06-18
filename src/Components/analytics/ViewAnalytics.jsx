@@ -19,7 +19,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { format, subDays, subMonths } from 'date-fns';
-import { LoaderIcon } from 'lucide-react';
+import { Ring } from '@uiball/loaders';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -123,7 +123,14 @@ const ViewAnalytics = () => {
             ease: "easeInOut"
           }}
         >
-          <LoaderIcon className="h-12 w-12 text-green-400" />
+          <Ring
+                    size={50}
+                    speed={0.8}
+                    stroke="1"
+                    strokeLength="0.25"
+                    bgOpacity="0.1"
+                    color="white"
+                  />
         </motion.div>
       </motion.div>
     );

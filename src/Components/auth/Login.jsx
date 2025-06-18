@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AppContext } from "../../Context/AppProvider";
 import { Ring } from "@uiball/loaders";
-import "ldrs/react/Ring.css"
+import "ldrs/react/Ring.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -35,8 +35,7 @@ const Login = () => {
         navigate("/"); // Redirect to home after successful login
       }
     } catch (err) {
-     console.log("error :", err);
-     
+      console.log("error :", err);
     } finally {
       setLoading(false);
     }
@@ -85,19 +84,21 @@ const Login = () => {
 
           <button
             type="submit"
-            className={`w-full py-3 px-6 bg-green-400 hover:bg-green-500 text-black font-semibold rounded-xl transition-all active:scale-95 flex ${loading?"justify-between" : "justify-center"} items-center`}
+            className={`w-full py-3 px-6 bg-green-400 hover:bg-green-500 text-black font-semibold rounded-xl transition-all active:scale-95 flex ${
+              loading ? "justify-between" : "justify-center"
+            } items-center`}
             disabled={loading}
           >
             {loading ? (
               <>
-                <p>Sign in</p>
+                Sign in
                 <Ring
-                size={20}
-                speed={0.8}
-                stroke="1"
-                strokeLength="0.25"
-                bgOpacity="0.1"
-                color="white"
+                  size={20}
+                  speed={0.8}
+                  stroke="1"
+                  strokeLength="0.25"
+                  bgOpacity="0.1"
+                  color="black"
                 />
               </>
             ) : (

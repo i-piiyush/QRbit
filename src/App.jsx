@@ -71,9 +71,9 @@ function App() {
         <Route
           path="/user-cards/view-card/:userId"
           element={
-            <ProtectedRoute>
+            
               <ViewCard />
-            </ProtectedRoute>
+           
           }
         />
         <Route

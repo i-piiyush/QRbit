@@ -1,10 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
-import { doc, getDoc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../firebase/firebaseConfig';
-import RenderSelectedCard from '../selection/RenderSelectedCard';
-import { Ring } from '@uiball/loaders';
-import { AppContext } from '../../Context/AppProvider';
+import React, { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
+import {
+  doc,
+  getDoc,
+  collection,
+  writeBatch,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "../../firebase/firebaseConfig";
+import RenderSelectedCard from "../selection/RenderSelectedCard";
+import { Ring } from "@uiball/loaders";
+import { AppContext } from "../../Context/AppProvider";
 
 const ViewCard = () => {
   const { userId } = useParams();
@@ -17,7 +23,7 @@ const ViewCard = () => {
       try {
         if (!userId) return;
 
-        const userDocRef = doc(db, 'users', userId);
+        const userDocRef = doc(db, "users", userId);
         const userDocSnap = await getDoc(userDocRef);
 
         if (userDocSnap.exists()) {
@@ -26,36 +32,45 @@ const ViewCard = () => {
           if (!user || user.uid !== userId) {
             const sessionKey = `viewed-${userId}`;
             if (!sessionStorage.getItem(sessionKey)) {
-              const viewRef = doc(db, 'cardViews', userId);
-              const viewHistoryRef = collection(db, `cardViews/${userId}/viewHistory`);
-              
+              const viewRef = doc(db, "cardViews", userId);
+              const viewHistoryRef = collection(
+                db,
+                `cardViews/${userId}/viewHistory`
+              );
+
               const batch = writeBatch(db);
-              
+
               // Get current total or default to 0
               const viewDoc = await getDoc(viewRef);
-              const currentTotal = viewDoc.exists() ? (viewDoc.data().totalViews || 0) : 0;
+              const currentTotal = viewDoc.exists()
+                ? viewDoc.data().totalViews || 0
+                : 0;
               const newTotal = currentTotal + 1;
-              
+
               // Update main view document
-              batch.set(viewRef, {
-                totalViews: newTotal,
-                lastViewed: serverTimestamp()
-              }, { merge: true });
-              
+              batch.set(
+                viewRef,
+                {
+                  totalViews: newTotal,
+                  lastViewed: serverTimestamp(),
+                },
+                { merge: true }
+              );
+
               // Add to view history
               batch.set(doc(viewHistoryRef), {
                 timestamp: serverTimestamp(),
                 cumulativeViews: newTotal,
-                dailyIncrement: 1
+                dailyIncrement: 1,
               });
-              
+
               await batch.commit();
-              sessionStorage.setItem(sessionKey, 'true');
+              sessionStorage.setItem(sessionKey, "true");
             }
           }
         }
       } catch (error) {
-        console.error('Error updating view count:', error);
+        console.error("Error updating view count:", error);
       } finally {
         setLoading(false);
       }
@@ -65,16 +80,18 @@ const ViewCard = () => {
   }, [userId, user]);
 
   if (loading) {
-    return <div className="w-full h-screen flex items-center justify-center">
-       <Ring
-                                size={50}
-                                speed={0.8}
-                                stroke="1"
-                                strokeLength="0.25"
-                                bgOpacity="0.1"
-                                color="white"
-                              />
-    </div>;
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <Ring
+          size={50}
+          speed={0.8}
+          stroke="1"
+          strokeLength="0.25"
+          bgOpacity="0.1"
+          color="white"
+        />
+      </div>
+    );
   }
 
   return (
